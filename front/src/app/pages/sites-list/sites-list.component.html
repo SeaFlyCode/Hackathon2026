@@ -1,0 +1,83 @@
+<div class="page-container">
+  <div class="list-header">
+    <h2 class="section-title">
+      <mat-icon>business</mat-icon>
+      Sites enregistrés
+    </h2>
+    <button mat-raised-button color="primary" routerLink="/sites/new">
+      <mat-icon>add</mat-icon> Nouveau site
+    </button>
+  </div>
+
+  <!-- État vide -->
+  <div *ngIf="siteService.sites().length === 0; else tableView" class="card empty-state">
+    <mat-icon class="empty-icon">business_center</mat-icon>
+    <h3>Aucun site enregistré</h3>
+    <p>Commencez par ajouter votre premier site pour calculer son empreinte carbone.</p>
+    <button mat-raised-button color="primary" routerLink="/sites/new">
+      <mat-icon>add_business</mat-icon> Ajouter un site
+    </button>
+  </div>
+
+  <!-- Tableau -->
+  <ng-template #tableView>
+    <div class="card">
+      <table mat-table [dataSource]="siteService.sites()" class="sites-table">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Site</th>
+          <td mat-cell *matCellDef="let site">
+            <strong>{{ site.name }}</strong>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="location">
+          <th mat-header-cell *matHeaderCellDef>Localisation</th>
+          <td mat-cell *matCellDef="let site">
+            <span class="location"><mat-icon>location_on</mat-icon> {{ site.location }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="surface">
+          <th mat-header-cell *matHeaderCellDef>Surface</th>
+          <td mat-cell *matCellDef="let site">{{ site.surfaceM2 | number }} m²</td>
+        </ng-container>
+
+        <ng-container matColumnDef="employees">
+          <th mat-header-cell *matHeaderCellDef>Employés</th>
+          <td mat-cell *matCellDef="let site">{{ site.employees | number }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef>Total CO₂</th>
+          <td mat-cell *matCellDef="let site">
+            <strong>{{ (getTotalCO2(site.id) / 1000) | number:'1.0-0' }} tCO₂e</strong>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="perM2">
+          <th mat-header-cell *matHeaderCellDef>CO₂/m²</th>
+          <td mat-cell *matCellDef="let site">
+            <span [class]="'chip-' + getLevel(getCO2PerM2(site.id))">
+              {{ getCO2PerM2(site.id) | number:'1.0-0' }} kg/m²
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let site">
+            <button mat-icon-button color="primary" [routerLink]="['/sites', site.id, 'result']" title="Voir résultats">
+              <mat-icon>bar_chart</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteSite(site.id, site.name)" title="Supprimer ce site">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </ng-template>
+</div>

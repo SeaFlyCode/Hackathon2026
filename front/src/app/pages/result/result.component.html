@@ -1,0 +1,116 @@
+<div class="page-container" *ngIf="result && site; else emptyState">
+  <div class="result-header">
+    <div>
+      <h2 class="section-title">
+        <mat-icon>assessment</mat-icon>
+        Résultats — {{ site.name }}
+      </h2>
+      <p class="site-meta">{{ site.location }} • {{ site.surfaceM2 | number }} m² • {{ site.employees | number }} employés</p>
+    </div>
+    <div class="header-actions">
+      <button mat-stroked-button routerLink="/sites">
+        <mat-icon>list</mat-icon> Tous les sites
+      </button>
+      <button mat-raised-button color="primary" (click)="exportPDF()">
+        <mat-icon>picture_as_pdf</mat-icon> Exporter PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <span class="kpi-label">Total CO₂</span>
+      <span class="kpi-value">{{ (result.total / 1000) | number:'1.0-0' }}</span>
+      <span class="kpi-unit">tCO₂e</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">CO₂ / m²</span>
+      <span class="kpi-value">{{ result.perM2 | number:'1.0-1' }}</span>
+      <span class="kpi-unit">kgCO₂e / m²</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">CO₂ / employé</span>
+      <span class="kpi-value">{{ (result.perEmployee / 1000) | number:'1.0-2' }}</span>
+      <span class="kpi-unit">tCO₂e / employé</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">Construction</span>
+      <span class="kpi-value" style="color: var(--cap-orange)">{{ (result.construction.total / 1000) | number:'1.0-0' }}</span>
+      <span class="kpi-unit">tCO₂e</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">Exploitation / an</span>
+      <span class="kpi-value" style="color: var(--cap-green)">{{ (result.exploitation.total / 1000) | number:'1.0-0' }}</span>
+      <span class="kpi-unit">tCO₂e</span>
+    </div>
+  </div>
+
+  <!-- Graphiques -->
+  <div class="charts-grid">
+    <div class="card">
+      <h3>Répartition globale</h3>
+      <canvas baseChart [data]="pieData" [options]="pieOptions" type="pie"></canvas>
+    </div>
+    <div class="card">
+      <h3>CO₂ par matériau</h3>
+      <canvas baseChart [data]="barData" [options]="barOptions" type="bar"></canvas>
+    </div>
+  </div>
+
+  <!-- Détail construction -->
+  <div class="card detail-card">
+    <h3><mat-icon>construction</mat-icon> Détail Construction</h3>
+    <div class="detail-table">
+      <div class="detail-row header-row">
+        <span>Matériau</span>
+        <span>Émissions</span>
+      </div>
+      <div class="detail-row" *ngFor="let m of result.construction.byMaterial">
+        <span class="material-name">{{ m.material | titlecase }}</span>
+        <span class="material-co2" [class.negative]="m.kgCO2e < 0">{{ formatTons(m.kgCO2e) }}</span>
+      </div>
+      <div class="detail-row parking-row">
+        <span>Parking ({{ site.parkingSpots }} places)</span>
+        <span>{{ formatTons(result.construction.parking) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Détail exploitation -->
+  <div class="card detail-card">
+    <h3><mat-icon>bolt</mat-icon> Détail Exploitation (annuel)</h3>
+    <div class="detail-table">
+      <div class="detail-row header-row">
+        <span>Poste</span>
+        <span>Émissions</span>
+      </div>
+      <div class="detail-row">
+        <span>Énergie ({{ site.annualEnergyMWh }} MWh)</span>
+        <span>{{ formatTons(result.exploitation.energy) }}</span>
+      </div>
+      <div class="detail-row">
+        <span>Déplacements ({{ site.employees }} employés)</span>
+        <span>{{ formatTons(result.exploitation.employees) }}</span>
+      </div>
+      <div class="detail-row">
+        <span>Postes de travail ({{ site.workstations }} postes)</span>
+        <span>{{ formatTons(result.exploitation.workstations) }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- État vide / erreur -->
+<ng-template #emptyState>
+  <div class="page-container empty-state">
+    <div class="empty-card card">
+      <mat-icon class="empty-icon">error_outline</mat-icon>
+      <h2>Site introuvable</h2>
+      <p>Les données de ce site ou ses résultats carbone ne sont pas disponibles.</p>
+      <button mat-raised-button color="primary" routerLink="/sites">
+        <mat-icon>list</mat-icon> Retour à la liste des sites
+      </button>
+    </div>
+  </div>
+</ng-template>

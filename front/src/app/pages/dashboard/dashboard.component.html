@@ -1,0 +1,70 @@
+<div class="page-container">
+  <div class="dashboard-header">
+    <div>
+      <h2 class="section-title">Dashboard Empreinte Carbone</h2>
+      <p class="subtitle">Vue globale de tous vos sites Capgemini</p>
+    </div>
+    <button mat-raised-button color="primary" routerLink="/sites/new">
+      <mat-icon>add</mat-icon> Nouveau site
+    </button>
+  </div>
+
+  <!-- KPIs globaux -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <span class="kpi-label">Sites analysés</span>
+      <span class="kpi-value">{{ totalSites() }}</span>
+      <span class="kpi-unit">sites</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">CO₂ total (tous sites)</span>
+      <span class="kpi-value">{{ totalCO2Tons() | number:'1.0-0' }}</span>
+      <span class="kpi-unit">tCO₂e</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">CO₂ moyen / m²</span>
+      <span class="kpi-value">{{ avgCO2PerM2() | number:'1.0-0' }}</span>
+      <span class="kpi-unit">kgCO₂e / m²</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">Employés couverts</span>
+      <span class="kpi-value">{{ totalEmployees() | number }}</span>
+      <span class="kpi-unit">collaborateurs</span>
+    </div>
+    <div class="kpi-card kpi-card--worst">
+      <span class="kpi-label">Site le plus polluant</span>
+      <span class="kpi-value kpi-value--name">{{ worstSite()?.site?.name ?? '—' }}</span>
+      <span class="kpi-unit" *ngIf="worstSite()">
+        {{ worstSite()!.result.perM2 | number:'1.0-0' }} kgCO₂e/m²
+      </span>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-grid">
+    <div class="card">
+      <h3>CO₂ par site (tCO₂e)</h3>
+      <canvas baseChart [data]="barData()" [options]="barOptions" type="bar"></canvas>
+    </div>
+    <div class="card">
+      <h3>Répartition globale des émissions</h3>
+      <canvas baseChart [data]="doughnutData()" [options]="doughnutOptions" type="doughnut"></canvas>
+    </div>
+  </div>
+
+  <!-- Liens rapides -->
+  <div class="card quick-links">
+    <h3>Actions rapides</h3>
+    <div class="links-grid">
+      <button mat-stroked-button routerLink="/sites">
+        <mat-icon>list</mat-icon> Voir tous les sites
+      </button>
+      <button mat-stroked-button routerLink="/compare">
+        <mat-icon>compare_arrows</mat-icon> Comparer des sites
+      </button>
+      <button mat-raised-button color="primary" routerLink="/sites/new">
+        <mat-icon>add_business</mat-icon> Ajouter un site
+      </button>
+    </div>
+  </div>
+</div>

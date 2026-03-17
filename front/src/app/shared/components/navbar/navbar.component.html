@@ -1,0 +1,26 @@
+<mat-toolbar class="navbar">
+  <div class="navbar-brand">
+    <mat-icon class="brand-icon">eco</mat-icon>
+    <span class="brand-name">CarbonTrack</span>
+    <span class="brand-sub">by Capgemini</span>
+  </div>
+
+  <nav class="navbar-links">
+    <a routerLink="/dashboard" routerLinkActive="active" mat-button>
+      <mat-icon>dashboard</mat-icon> Dashboard
+    </a>
+    <a routerLink="/sites" routerLinkActive="active" mat-button>
+      <mat-icon>business</mat-icon> Sites
+    </a>
+    <a routerLink="/sites/new" routerLinkActive="active" mat-button>
+      <mat-icon>add_circle</mat-icon> Nouveau site
+    </a>
+    <a routerLink="/compare" routerLinkActive="active" mat-button>
+      <mat-icon>compare_arrows</mat-icon> Comparer
+    </a>
+  </nav>
+
+  <button mat-icon-button (click)="auth.logout()" title="Déconnexion">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>

@@ -1,0 +1,53 @@
+<div class="login-page">
+  <div class="login-left">
+    <div class="login-left-content">
+      <mat-icon class="hero-icon">eco</mat-icon>
+      <h1>CarbonTrack</h1>
+      <p>Calculez et réduisez l'empreinte carbone de vos sites physiques</p>
+      <div class="features">
+        <div class="feature"><mat-icon>calculate</mat-icon> Calcul CO₂ précis (ADEME)</div>
+        <div class="feature"><mat-icon>dashboard</mat-icon> Dashboard interactif</div>
+        <div class="feature"><mat-icon>compare_arrows</mat-icon> Comparaison multi-sites</div>
+        <div class="feature"><mat-icon>trending_down</mat-icon> Suivi des émissions</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <mat-card class="login-card">
+      <mat-card-header>
+        <mat-card-title>Connexion</mat-card-title>
+        <mat-card-subtitle>Accédez à votre espace Capgemini</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <mat-icon matPrefix>email</mat-icon>
+            <input matInput formControlName="email" type="email" placeholder="admin@capgemini.com">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Mot de passe</mat-label>
+            <mat-icon matPrefix>lock</mat-icon>
+            <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
+            <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <div class="hint-box">
+            <mat-icon>info</mat-icon>
+            <span>Demo : admin&#64;capgemini.com / admin</span>
+          </div>
+
+          <button mat-raised-button color="primary" type="submit" class="full-width submit-btn" [disabled]="loading">
+            <mat-icon>login</mat-icon>
+            {{ loading ? 'Connexion...' : 'Se connecter' }}
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+.navbar {
+  background: var(--cap-blue) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 32px;
+
+    .brand-icon { color: #7dd87d; }
+    .brand-name { font-size: 18px; font-weight: 700; }
+    .brand-sub { font-size: 12px; opacity: 0.7; margin-left: 4px; }
+  }
+
+  .navbar-links {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+
+    a {
+      color: rgba(255,255,255,0.85) !important;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 8px;
+      transition: background 0.2s;
+
+      &.active, &:hover {
+        background: rgba(255,255,255,0.15) !important;
+        color: white !important;
+      }
+
+      mat-icon { font-size: 18px; width: 18px; height: 18px; }
+    }
+  }
+
+  button mat-icon { color: white; }
+}

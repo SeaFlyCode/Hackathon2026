@@ -1,0 +1,57 @@
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+
+  .section-title { margin: 0 0 4px; font-size: 24px; }
+  .subtitle { color: var(--text-secondary); font-size: 14px; margin: 0; }
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+
+  // La 5ème card occupe toute la dernière ligne si elle est seule
+  .kpi-card:nth-child(5) {
+    grid-column: 1 / -1;
+  }
+}
+
+.kpi-card--worst {
+  background: linear-gradient(135deg, #fff5f5, #fff);
+  border-left: 4px solid var(--cap-orange, #F4A022);
+
+  .kpi-value--name {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--cap-orange, #F4A022);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+
+  h3 { margin: 0 0 16px; font-size: 16px; font-weight: 600; }
+}
+
+.quick-links {
+  h3 { margin: 0 0 16px; font-size: 16px; font-weight: 600; }
+
+  .links-grid {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    button { display: flex; align-items: center; gap: 8px; }
+  }
+}

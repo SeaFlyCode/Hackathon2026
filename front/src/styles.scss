@@ -1,1 +1,210 @@
-/* You can add global styles to this file, and also import other style files */
+/* Styles globaux CarbonTrack */
+
+:root {
+  --cap-blue: #0070ad;
+  --cap-blue-dark: #004d7a;
+  --cap-blue-light: #e8f4fd;
+  --cap-green: #00b050;
+  --cap-orange: #ff6600;
+  --cap-red: #e53935;
+  --surface: #f5f7fa;
+  --card-bg: #ffffff;
+  --text-primary: #1a1a2e;
+  --text-secondary: #6b7280;
+  --border: #e2e8f0;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--surface);
+  color: var(--text-primary);
+}
+
+.page-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+  border: 1px solid var(--border);
+}
+
+.kpi-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .kpi-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--cap-blue);
+  }
+
+  .kpi-unit {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.chip-green {
+  background: #e8f5e9;
+  color: var(--cap-green);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chip-orange {
+  background: #fff3e0;
+  color: var(--cap-orange);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chip-red {
+  background: #ffebee;
+  color: var(--cap-red);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ─────────────────────────────────────────
+   Angular Material — Form Fields fix
+───────────────────────────────────────── */
+
+// Fixe le margin bottom automatique des mat-form-field (cause de décalages visuels)
+.mat-mdc-form-field {
+  width: 100%;
+
+  // Supprime le padding bottom réservé aux hint/error quand absent
+  &:not(.mat-form-field-has-hint) .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+}
+
+// Corrige la couleur du label au focus
+.mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: var(--cap-blue) !important;
+}
+
+// Bordure focus bleue Capgemini
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--cap-blue) !important;
+  border-width: 2px !important;
+}
+
+// Icône prefix alignée
+.mat-mdc-form-field .mat-mdc-form-field-icon-prefix {
+  color: var(--text-secondary);
+  padding-right: 8px;
+}
+
+/* ─────────────────────────────────────────
+   Boutons globaux custom
+───────────────────────────────────────── */
+
+// Bouton primaire (bleu Capgemini)
+.mat-mdc-raised-button.mat-primary,
+button[mat-raised-button][color="primary"] {
+  background-color: var(--cap-blue) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3px !important;
+  box-shadow: 0 2px 8px rgba(0, 112, 173, 0.35) !important;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+
+  &:hover:not(:disabled) {
+    background-color: var(--cap-blue-dark) !important;
+    box-shadow: 0 4px 14px rgba(0, 112, 173, 0.45) !important;
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 112, 173, 0.3) !important;
+  }
+
+  &:disabled {
+    background-color: #c8dce8 !important;
+    color: #8aabbc !important;
+    box-shadow: none !important;
+  }
+}
+
+// Bouton stroked (contour bleu)
+.mat-mdc-outlined-button,
+button[mat-stroked-button] {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.3px !important;
+  border-color: var(--cap-blue) !important;
+  color: var(--cap-blue) !important;
+  transition: background 0.2s, transform 0.1s !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+
+  &:hover:not(:disabled) {
+    background-color: var(--cap-blue-light) !important;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    border-color: var(--border) !important;
+    color: var(--text-secondary) !important;
+  }
+}
+
+// Bouton warn (rouge — delete)
+button[mat-icon-button][color="warn"] {
+  color: var(--cap-red) !important;
+  transition: background 0.2s !important;
+
+  &:hover:not(:disabled) {
+    background-color: #ffebee !important;
+  }
+}
+
+// Bouton icon générique
+button[mat-icon-button] {
+  border-radius: 8px !important;
+  transition: background 0.2s !important;
+}

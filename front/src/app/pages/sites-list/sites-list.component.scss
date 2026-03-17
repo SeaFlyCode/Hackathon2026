@@ -1,0 +1,31 @@
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .section-title { display: flex; align-items: center; gap: 10px; margin: 0; mat-icon { color: var(--cap-blue); } }
+}
+
+.sites-table {
+  width: 100%;
+
+  .location { display: flex; align-items: center; gap: 4px; color: var(--text-secondary); font-size: 13px;
+    mat-icon { font-size: 14px; width: 14px; height: 14px; } }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 32px;
+
+  .empty-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  h3 { margin: 0 0 8px; font-size: 20px; }
+  p { color: var(--text-secondary); margin: 0 0 24px; font-size: 14px; }
+}

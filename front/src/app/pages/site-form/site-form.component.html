@@ -1,0 +1,124 @@
+<div class="page-container">
+  <h2 class="section-title">
+    <mat-icon>add_business</mat-icon>
+    Nouveau site
+  </h2>
+
+  <mat-stepper orientation="horizontal" #stepper [linear]="false">
+    <!-- STEP 1 : Informations générales -->
+    <mat-step label="Informations générales">
+      <form [formGroup]="infoForm">
+        <div class="card form-card">
+          <div class="form-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Nom du site</mat-label>
+              <mat-icon matPrefix>business</mat-icon>
+              <input matInput formControlName="name" placeholder="Ex: Capgemini Rennes">
+              <mat-error *ngIf="infoForm.get('name')?.hasError('required')">Champ obligatoire</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Localisation</mat-label>
+              <mat-icon matPrefix>location_on</mat-icon>
+              <input matInput formControlName="location" placeholder="Ex: Rennes, France">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Surface totale (m²)</mat-label>
+              <mat-icon matPrefix>square_foot</mat-icon>
+              <input matInput formControlName="surfaceM2" type="number" placeholder="11771">
+              <mat-hint>Surface totale du bâtiment</mat-hint>
+              <mat-error *ngIf="infoForm.get('surfaceM2')?.invalid">Valeur positive requise</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Places de parking</mat-label>
+              <mat-icon matPrefix>local_parking</mat-icon>
+              <input matInput formControlName="parkingSpots" type="number" placeholder="200">
+              <mat-error *ngIf="infoForm.get('parkingSpots')?.invalid">Valeur positive requise</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Consommation énergétique (MWh/an)</mat-label>
+              <mat-icon matPrefix>bolt</mat-icon>
+              <input matInput formControlName="annualEnergyMWh" type="number" placeholder="1840">
+              <mat-hint>Source : factures énergie annuelles</mat-hint>
+              <mat-error *ngIf="infoForm.get('annualEnergyMWh')?.invalid">Valeur positive requise</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre d'employés</mat-label>
+              <mat-icon matPrefix>people</mat-icon>
+              <input matInput formControlName="employees" type="number" placeholder="1800">
+              <mat-error *ngIf="infoForm.get('employees')?.invalid">Minimum 1 employé</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Postes de travail</mat-label>
+              <mat-icon matPrefix>computer</mat-icon>
+              <input matInput formControlName="workstations" type="number" placeholder="1037">
+              <mat-error *ngIf="infoForm.get('workstations')?.invalid">Minimum 1 poste</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="step-actions">
+            <button mat-raised-button color="primary" (click)="goToStep2(stepper)">
+              Suivant <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- STEP 2 : Matériaux -->
+    <mat-step label="Matériaux de construction">
+      <form [formGroup]="materialsForm">
+        <div class="card form-card">
+          <p class="form-hint">
+            <mat-icon>info</mat-icon>
+            Renseignez les matériaux utilisés lors de la construction du bâtiment.
+            Les facteurs d'émission sont basés sur les données ADEME.
+          </p>
+
+          <div formArrayName="materials">
+            <div *ngFor="let mat of materials.controls; let i = index" [formGroupName]="i" class="material-row">
+              <mat-form-field appearance="outline" class="material-type">
+                <mat-label>Matériau</mat-label>
+                <mat-select formControlName="type">
+                  <mat-option *ngFor="let t of materialTypes" [value]="t">{{ t | titlecase }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="material-qty">
+                <mat-label>Quantité (tonnes)</mat-label>
+                <input matInput formControlName="quantityTons" type="number" placeholder="0">
+              </mat-form-field>
+
+              <button mat-icon-button color="warn" (click)="removeMaterial(i)" [disabled]="materials.length === 1">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <button mat-stroked-button color="primary" (click)="addMaterial()" class="add-material-btn">
+            <mat-icon>add</mat-icon> Ajouter un matériau
+          </button>
+
+          <div *ngIf="error" class="error-message">
+            <mat-icon>error</mat-icon> {{ error }}
+          </div>
+
+          <div class="step-actions">
+            <button mat-stroked-button matStepperPrevious>
+              <mat-icon>arrow_back</mat-icon> Précédent
+            </button>
+            <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="loading">
+              <mat-icon>{{ loading ? 'hourglass_empty' : 'calculate' }}</mat-icon>
+              {{ loading ? 'Calcul en cours...' : 'Calculer l\'empreinte' }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+  </mat-stepper>
+</div>

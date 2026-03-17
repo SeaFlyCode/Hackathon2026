@@ -1,0 +1,136 @@
+<div class="page-container">
+  <h2 class="section-title">
+    <mat-icon>compare_arrows</mat-icon>
+    Comparer des sites
+  </h2>
+
+  <!-- Sélection multiple -->
+  <div class="card selector-card">
+    <mat-form-field appearance="outline" class="multi-select">
+      <mat-label>Sélectionner les sites à comparer (minimum 2)</mat-label>
+      <mat-select [(ngModel)]="selectedIds" multiple>
+        <mat-option *ngFor="let s of siteService.sites()" [value]="s.id">
+          {{ s.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="selector-actions">
+      <span class="selection-hint" *ngIf="selectedIds.length > 0 && selectedIds.length < 2">
+        <mat-icon>info</mat-icon> Sélectionnez au moins 2 sites
+      </span>
+      <span class="selection-hint selection-hint--ok" *ngIf="selectedIds.length >= 2">
+        <mat-icon>check_circle</mat-icon> {{ selectedIds.length }} sites sélectionnés
+      </span>
+      <button mat-raised-button color="primary" (click)="compare()" [disabled]="!canCompare">
+        <mat-icon>bar_chart</mat-icon> Comparer
+      </button>
+    </div>
+  </div>
+
+  <!-- Résultats -->
+  <div *ngIf="compareRows.length >= 2">
+
+    <!-- Graphique barres groupées -->
+    <div class="card chart-card">
+      <h3>Comparaison des émissions par catégorie (tCO₂e)</h3>
+      <canvas baseChart [data]="compareData" [options]="compareOptions" type="bar"></canvas>
+    </div>
+
+    <!-- Tableau comparatif -->
+    <div class="card table-card">
+      <h3>Tableau comparatif détaillé</h3>
+
+      <!-- Légende couleurs -->
+      <div class="legend">
+        <span *ngFor="let row of compareRows" class="legend-item">
+          <span class="legend-dot" [style.background]="row.color"></span>
+          {{ row.site.name }}
+        </span>
+        <span class="legend-item"><span class="legend-dot legend-dot--best"></span> Meilleur</span>
+        <span class="legend-item"><span class="legend-dot legend-dot--worst"></span> Moins bon</span>
+      </div>
+
+      <table mat-table [dataSource]="compareRows" class="compare-mat-table">
+
+        <!-- Nom -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Site</th>
+          <td mat-cell *matCellDef="let row">
+            <div class="site-name-cell">
+              <span class="color-badge" [style.background]="row.color"></span>
+              <strong>{{ row.site.name }}</strong>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Total CO₂ -->
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef>Total CO₂</th>
+          <td mat-cell *matCellDef="let row" [class]="getCellClass(row, 'totalTons')">
+            {{ row.totalTons | number:'1.0-0' }} tCO₂e
+          </td>
+        </ng-container>
+
+        <!-- CO₂/m² -->
+        <ng-container matColumnDef="perM2">
+          <th mat-header-cell *matHeaderCellDef>CO₂/m²</th>
+          <td mat-cell *matCellDef="let row" [class]="getCellClass(row, 'perM2')">
+            {{ row.perM2 | number:'1.0-1' }} kg/m²
+          </td>
+        </ng-container>
+
+        <!-- CO₂/employé -->
+        <ng-container matColumnDef="perEmployee">
+          <th mat-header-cell *matHeaderCellDef>CO₂/employé</th>
+          <td mat-cell *matCellDef="let row" [class]="getCellClass(row, 'perEmployee')">
+            {{ row.perEmployee | number:'1.0-2' }} tCO₂e
+          </td>
+        </ng-container>
+
+        <!-- Construction -->
+        <ng-container matColumnDef="construction">
+          <th mat-header-cell *matHeaderCellDef>Construction</th>
+          <td mat-cell *matCellDef="let row" [class]="getCellClass(row, 'constructionTons')">
+            {{ row.constructionTons | number:'1.0-0' }} tCO₂e
+          </td>
+        </ng-container>
+
+        <!-- Énergie -->
+        <ng-container matColumnDef="energy">
+          <th mat-header-cell *matHeaderCellDef>Énergie</th>
+          <td mat-cell *matCellDef="let row" [class]="getCellClass(row, 'energyTons')">
+            {{ row.energyTons | number:'1.0-0' }} tCO₂e
+          </td>
+        </ng-container>
+
+        <!-- Déplacements -->
+        <ng-container matColumnDef="commute">
+          <th mat-header-cell *matHeaderCellDef>Déplacements</th>
+          <td mat-cell *matCellDef="let row" [class]="getCellClass(row, 'commuteTons')">
+            {{ row.commuteTons | number:'1.0-0' }} tCO₂e
+          </td>
+        </ng-container>
+
+        <!-- Score -->
+        <ng-container matColumnDef="score">
+          <th mat-header-cell *matHeaderCellDef>Score perf.</th>
+          <td mat-cell *matCellDef="let row">
+            <div class="score-badge" [class.score-high]="row.score >= 70" [class.score-mid]="row.score >= 40 && row.score < 70" [class.score-low]="row.score < 40">
+              {{ row.score }}/100
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- État vide avant comparaison -->
+  <div *ngIf="compareRows.length === 0 && selectedIds.length < 2" class="card empty-compare">
+    <mat-icon>compare_arrows</mat-icon>
+    <p>Sélectionnez au moins 2 sites pour lancer la comparaison.</p>
+  </div>
+</div>
