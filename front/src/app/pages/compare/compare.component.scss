@@ -6,6 +6,7 @@
   mat-icon { color: var(--cap-blue); }
 }
 
+/* ── Sélecteur ── */
 .selector-card {
   margin-bottom: 24px;
 
@@ -38,25 +39,34 @@
   }
 }
 
-.chart-card {
-  margin-bottom: 24px;
-  h3 { margin: 0 0 16px; font-size: 16px; font-weight: 600; }
+.error-message {
+  margin-top: 12px;
+  color: var(--cap-red);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
 }
 
-.table-card {
-  margin-bottom: 24px;
-  overflow-x: auto;
-
-  h3 { margin: 0 0 12px; font-size: 16px; font-weight: 600; }
-}
-
-.legend {
+/* ── Légende globale ── */
+.legend-bar {
   display: flex;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 16px;
+  padding: 12px 20px;
   font-size: 13px;
+
+  .legend-title {
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-right: 4px;
+  }
+
+  .legend-sep {
+    flex: 1;
+  }
 
   .legend-item {
     display: flex;
@@ -69,30 +79,83 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
+    flex-shrink: 0;
 
-    &--best { background: #00C853; }
+    &--best  { background: #00C853; }
     &--worst { background: #E63329; }
   }
 }
 
-.compare-mat-table {
-  width: 100%;
-
-  .site-name-cell {
+/* ── Graphique ── */
+.chart-card {
+  margin-bottom: 20px;
+  h3 {
+    margin: 0 0 16px;
+    font-size: 15px;
+    font-weight: 600;
     display: flex;
     align-items: center;
     gap: 8px;
-  }
-
-  .color-badge {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-    flex-shrink: 0;
+    mat-icon { color: var(--cap-blue); font-size: 18px; width: 18px; height: 18px; }
   }
 }
 
+/* ── Cards tableaux ── */
+.table-card {
+  margin-bottom: 20px;
+
+  h3 {
+    margin: 0 0 16px;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+    mat-icon { color: var(--cap-blue); font-size: 18px; width: 18px; height: 18px; }
+  }
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+/* ── Table native ── */
+.c-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  th {
+    background: var(--surface);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    vertical-align: middle;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  tbody tr:hover td {
+    background: var(--cap-blue-light);
+  }
+}
+
+/* Cellules colorées meilleur/pire */
 td.cell-best {
   color: #00862e;
   font-weight: 700;
@@ -105,18 +168,44 @@ td.cell-worst {
   background: rgba(230, 51, 41, 0.08);
 }
 
+/* ── Score badge ── */
 .score-badge {
   display: inline-block;
   padding: 3px 10px;
   border-radius: 12px;
   font-weight: 700;
   font-size: 13px;
+  white-space: nowrap;
 
   &.score-high { background: rgba(0, 200, 83, 0.15); color: #00862e; }
   &.score-mid  { background: rgba(244, 160, 34, 0.15); color: #b07200; }
   &.score-low  { background: rgba(230, 51, 41, 0.15); color: #c62828; }
 }
 
+/* ── Barres de pourcentage ── */
+.pct-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+
+  .pct-bar {
+    height: 8px;
+    border-radius: 4px;
+    min-width: 2px;
+    transition: width 0.4s ease;
+    flex-shrink: 0;
+  }
+
+  span {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+}
+
+/* ── État vide ── */
 .empty-compare {
   text-align: center;
   padding: 48px;
